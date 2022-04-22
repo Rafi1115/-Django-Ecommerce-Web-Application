@@ -1,0 +1,144 @@
+
+{% extends "eco/base.html" %}
+{% load static %}
+{% load cart_template_tags %}
+{% block content %}
+
+
+  <body>
+   
+    <div id="all">
+      <div id="content">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <!-- breadcrumb-->
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'eco:EcoIndex' %}">Home</a></li>
+                  <li aria-current="page" class="breadcrumb-item active">Shopping cart</li>
+                </ol>
+              </nav>
+            </div>
+            <div id="basket" class="col-lg-9">
+
+
+              <div class="box">
+                <form method="post" action="checkout1.html">
+                  <h1>Shopping cart</h1>
+                  <p class="text-muted">You currently have {{request.user|cart_item_count}} item(s) in your cart.</p>
+                  <div class="table-responsive">
+                    
+                    <table class="table">
+
+                      <thead>
+                        <tr>
+                          <th colspan="2">Product</th>
+                          <th>Quantity</th>
+                          <th>Unit price</th>
+                          <th>Discount</th>
+                          <th colspan="2">Total</th>
+                        </tr>
+                      </thead>
+                      
+                      <tbody>
+
+                        {% for o in order %}
+                        {% for order in o.items.all  %}
+                          
+       
+                        <tr>
+                          <td><a href="#"><img src="{{order.item.image.url}}" alt="{{order.item.title}}"></a></td>
+                          <td><a href="#">{{order.item.title|capfirst}}</a></td>
+                          <td>
+                            <!-- <input type="number" value="{{order.quantity}}" class="form-control">  -->
+                            <a href="{{order.item.get_add_to_cart_url}}"><i class="fa fa-plus mr-2 text-success"></i></a>
+                            {{order.quantity }}
+                            <a href="{{order.item.get_remove_from_singel_cart_url}}"><i class="fa fa-minus mr-2 text-danger"></i></a>
+                           
+                          </td>
+                          <!-- <td>${{order.item.price|floatformat:2}}</td> -->
+                          <td>${{order.get_total_item_price|floatformat:2}}</td>
+                           
+                          {% if order.item.discount_price %}
+                          <td>${{order.get_total_discount_item_price|floatformat:2}}</td>
+                          {% else %}
+                          <td>$00.00</td>
+                          {% endif %}
+                        
+
+                          {% if order.item.discount_price %}
+                          <td>${{order.get_amount_saved|floatformat:2}}</td>
+                          {% else %}
+                          <td>${{order.get_total_item_price|floatformat:2}}</td>
+                          {% endif %}
+
+<!-- 
+                          <td><a href="{% url 'eco:remove-from-cart' order.item.slug %}"><i class="fa fa-trash-o"></i></a></td> -->
+                          <td><a href="{{order.item.get_remove_from_cart_url}}"><i class="fa fa-trash-o text-danger"></i></a></td>
+
+                        </tr>
+
+                        {% endfor %}
+                        {% endfor %}
+                    
+                        <tfoot>
+                          <tr>
+
+                        {% for order in order %}
+                       {% if order.get_total %}
+    
+                            <th colspan="5">Total</th>
+                            <th colspan="2">${{ order.get_total|floatformat:2 }}</th>
+                        
+                            {% endif %}
+                              
+                           {% endfor %}
+                 
+                          </tr>
+                        </tfoot>
+                                         
+                      
+                       
+                    
+
+                                           
+                      </tbody>
+                  
+                    </table>
+                  </div>
+
+                  <!-- /.table-responsive-->
+                  <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
+                    <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
+                    <div class="right">
+
+                        <a class="btn btn-outline-secondary" href="{% url 'eco:wish-summary' %}"><i class="fa fa-refresh"></i>My Wishlist</a>
+
+                      <a class="btn btn-primary" href="{% url 'eco:checkout' %}">Proceed to checkout 
+                        <i class="fa fa-chevron-right"></i></a>
+                      
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.box-->
+         
+            </div>
+
+
+
+          {% include "eco/order_snippet.html" %}
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+
+
+  
+{% endblock content %}
