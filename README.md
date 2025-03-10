@@ -18,8 +18,8 @@ A **full-featured E-Commerce web application** built with **Django & Python**. T
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/Rafi1115/Django-Ecommerce-Web-Application.git
+   cd Django-Ecommerce-Web-Application
    ```
 
 2. **Create a virtual environment & activate it**  
